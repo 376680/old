@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -137,13 +138,13 @@ export default function Home() {
             {/* 桌面端导航 */}
             <nav className="hidden lg:flex items-center space-x-6">
               {navigationItems.map((item, index) => (
-                <a
+                <Link
                   key={index}
                   href={item.href}
                   className="text-sm hover:text-blue-200 transition-colors"
                 >
                   {item.name}
-                </a>
+                </Link>
               ))}
             </nav>
 
@@ -163,13 +164,13 @@ export default function Home() {
             <div className="lg:hidden py-4 border-t border-blue-800">
               <div className="grid grid-cols-2 gap-2">
                 {navigationItems.map((item, index) => (
-                  <a
+                  <Link
                     key={index}
                     href={item.href}
                     className="text-sm text-left py-2 px-3 hover:bg-blue-800 rounded transition-colors"
                   >
                     {item.name}
-                  </a>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -205,7 +206,7 @@ export default function Home() {
           <h3 className="text-2xl font-bold text-gray-900 mb-8 text-center">我该如何...</h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {quickActions.map((action, index) => (
-              <a key={index} href={action.href}>
+              <Link key={index} href={action.href}>
                 <Card className={`${action.color} cursor-pointer transition-all hover:shadow-md`}>
                   <CardHeader className="pb-3">
                     <div className="flex items-center space-x-3">
@@ -221,7 +222,7 @@ export default function Home() {
                     </CardDescription>
                   </CardContent>
                 </Card>
-              </a>
+              </Link>
             ))}
           </div>
         </div>
