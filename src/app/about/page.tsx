@@ -2,25 +2,23 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { 
   Mouse, 
   Crown, 
-  Calendar,
-  MapPin,
   Users,
   Building,
   Shield,
   BookOpen,
   History,
-  ChevronRight,
   Award,
   Target,
   Globe,
   Heart,
-  DollarSign
+  DollarSign,
+  ChevronRight
 } from "lucide-react";
 
 export default function AboutPage() {

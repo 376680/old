@@ -19,17 +19,15 @@ import {
   BookOpen,
   Award,
   Heart,
-  AlertTriangle,
-  ChevronRight,
   Download,
   Phone,
   Mail,
-  Calendar,
   Target,
   Flag,
   IdCard,
   UserCheck,
-  ArrowRight
+  ChevronRight,
+  Calendar
 } from "lucide-react";
 
 export default function ImmigrationPage() {

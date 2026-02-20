@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
+
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { 
   DollarSign, 
@@ -15,27 +15,20 @@ import {
   Calculator,
   MapPin,
   Shield,
-  Users,
   TrendingUp,
   AlertTriangle,
   CheckCircle,
-  Clock,
-  ChevronRight,
   Download,
   Phone,
   Mail,
-  HelpCircle,
   Target,
   Globe,
   PiggyBank,
   Receipt,
   Navigation,
-  Factory,
-  GraduationCap,
+  ShoppingCart,
   Heart,
-  Home,
-  Car,
-  ShoppingCart
+  HelpCircle
 } from "lucide-react";
 
 export default function ServicesPage() {

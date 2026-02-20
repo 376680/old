@@ -8,7 +8,6 @@ import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { 
   Heart, 
-  Baby, 
   Users, 
   Shield,
   Clock,
@@ -19,14 +18,11 @@ import {
   Phone,
   Mail,
   MapPin,
-  ChevronRight,
   Cookie,
   Milk,
   Home,
-  Activity,
   Star,
   TrendingUp,
-  HelpCircle,
   Download,
   ArrowRight
 } from "lucide-react";

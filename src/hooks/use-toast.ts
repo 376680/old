@@ -34,21 +34,22 @@ function genId() {
 
 type ActionType = typeof actionTypes
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type Action =
   | {
-    type: ActionType["ADD_TOAST"]
+    type: typeof actionTypes.ADD_TOAST
     toast: ToasterToast
   }
   | {
-    type: ActionType["UPDATE_TOAST"]
+    type: typeof actionTypes.UPDATE_TOAST
     toast: Partial<ToasterToast>
   }
   | {
-    type: ActionType["DISMISS_TOAST"]
+    type: typeof actionTypes.DISMISS_TOAST
     toastId?: ToasterToast["id"]
   }
   | {
-    type: ActionType["REMOVE_TOAST"]
+    type: typeof actionTypes.REMOVE_TOAST
     toastId?: ToasterToast["id"]
   }
 
@@ -129,7 +130,7 @@ export const reducer = (state: State, action: Action): State => {
   }
 }
 
-const listeners: Array<(state: State) => void> = []
+const listeners: Array<(_state: State) => void> = []
 
 let memoryState: State = { toasts: [] }
 
