@@ -1,49 +1,101 @@
-#!/bin/bash
+name: CI/CD
 
-# 小鼠帝国政府网 - 快速部署脚本
-# 使用方法: ./deploy.sh "提交信息"
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
 
-echo "🐭 小鼠帝国政府网 - 部署脚本"
-echo "================================"
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-# 检查是否提供了提交信息
-if [ -z "$1" ]; then
-    echo "❌ 错误: 请提供提交信息"
-    echo "使用方法: ./deploy.sh \"你的提交信息\""
-    exit 1
-fi
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
 
-COMMIT_MESSAGE="$1"
+      - name: Install dependencies
+        run: npm ci
 
-echo "📝 提交信息: $COMMIT_MESSAGE"
-echo ""
+      - name: Run ESLint
+        run: npm run lint
 
-# 检查Git状态
-echo "🔍 检查Git状态..."
-if [ -z "$(git status --porcelain)" ]; then
-    echo "✅ 没有需要提交的更改"
-    exit 0
-fi
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-echo "📋 发现以下更改:"
-git status --short
-echo ""
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
 
-# 添加所有更改
-echo "➕ 添加所有更改..."
-git add .
+      - name: Install dependencies
+        run: npm ci
 
-# 提交更改
-echo "💾 提交更改..."
-git commit -m "$COMMIT_MESSAGE"
+      - name: Generate Prisma Client
+        run: npm run db:generate
 
-# 推送到远程仓库
-echo "🚀 推送到GitHub..."
-git push origin main
+      - name: Build Next.js
+        run: npm run build
+        env:
+          NODE_ENV: production
+          GITHUB_ACTIONS: 'true'
+          GITHUB_REPOSITORY: ${{ github.repository }}
 
-echo ""
-echo "✅ 部署完成！"
-echo "🌐 网站将在几分钟后更新"
-echo "📊 查看部署状态: https://github.com/$(git config remote.origin.url | sed 's/.*github.com[:/]\([^.]*\).*/\1/')/actions"
-echo ""
-echo "🎉 小鼠帝国万岁！"
+  deploy:
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma Client
+        run: npm run db:generate
+
+      - name: Build for GitHub Pages
+        run: npm run build
+        env:
+          NODE_ENV: production
+          GITHUB_ACTIONS: 'true'
+          GITHUB_REPOSITORY: ${{ github.repository }}
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './out'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
